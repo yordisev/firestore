@@ -1,9 +1,11 @@
 import { ref } from 'vue-demi'
-import {db} from '../firebase'
+import {db, marcaTiempo} from '../firebase'
+import { useAuth } from '@vueuse/firebase'
 
 export const useDB = () => {
         const referencia = db.collection('todos')
         const cargando = ref(false)
+        const {user} = useAuth()
 
 const getTodos = async () => {
 
@@ -25,6 +27,29 @@ const getTodos = async () => {
     }
 }
 
-return {getTodos, cargando}
+
+const agregarTodo = async (texto) => {
+    try {
+        const todo = {
+            texto:texto,
+            fecha:marcaTiempo(),
+            estado:false,
+            uid: user.value.uid
+        }
+        const res = await referencia.add(todo)
+
+        return {
+            id: res.id,
+            ...todo
+        }
+    } catch (error) {
+        return{
+            error,
+            res : true
+        }
+    }
+}
+
+return {getTodos, cargando, agregarTodo}
 
 }

@@ -5,6 +5,8 @@
   <Cargando v-if="cargando"/>
   <div v-else>
     <Error v-if="pintarError"/>
+
+    <TodoForm/>
     <pre>
       {{todos}}
     </pre>
@@ -17,11 +19,13 @@ import {useAuth} from '@vueuse/firebase'
 import {useDB} from '../composables/useDB'
 import Cargando from '../components/Cargando.vue'
 import Error from '../components/Error.vue'
+import TodoForm from '../components/TodoForm.vue'
 import { computed, onMounted, provide, ref } from 'vue-demi'
 export default {
   components:{
     Cargando,
-    Error
+    Error,
+    TodoForm
   },
 setup(){
   const {isAuthenticated} = useAuth()
@@ -29,6 +33,7 @@ setup(){
   const todos = ref([])
   const error = ref(null)
   provide('error', error)
+  provide('todos', todos)
   const pintarError = computed(() => error.value ? true : false)
   onMounted(async() => {
     todos.value = await getTodos()
