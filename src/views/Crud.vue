@@ -5,11 +5,11 @@
   <Cargando v-if="cargando"/>
   <div v-else>
     <Error v-if="pintarError"/>
-
     <TodoForm/>
-    <pre>
+    <Todo v-for="todo in todos" :key="todo.id" :todo="todo"/>
+    <!-- <pre>
       {{todos}}
-    </pre>
+    </pre> -->
   </div>
 </div>
 </template>
@@ -20,12 +20,14 @@ import {useDB} from '../composables/useDB'
 import Cargando from '../components/Cargando.vue'
 import Error from '../components/Error.vue'
 import TodoForm from '../components/TodoForm.vue'
+import Todo from '../components/Todo.vue'
 import { computed, onMounted, provide, ref } from 'vue-demi'
 export default {
   components:{
     Cargando,
     Error,
-    TodoForm
+    TodoForm,
+    Todo
   },
 setup(){
   const {isAuthenticated} = useAuth()
