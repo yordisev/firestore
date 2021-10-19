@@ -7,9 +7,9 @@
     <Error v-if="pintarError"/>
     <TodoForm/>
     <Todo v-for="todo in todos" :key="todo.id" :todo="todo"/>
-    <!-- <pre>
-      {{todos}}
-    </pre> -->
+    <p v-if="todos.length === 0">
+Sin datos
+    </p>
   </div>
 </div>
 </template>
